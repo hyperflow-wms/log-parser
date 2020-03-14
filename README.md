@@ -1,1 +1,4 @@
-# workflow-log-parser
+# Workflow log parser
+
+## How to run parser?
+
