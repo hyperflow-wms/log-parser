@@ -1,11 +1,12 @@
-import os
+import argparse
 import json
+import os
 import re
 from datetime import datetime
-import argparse
-
 
 SOURCE_DIR = 'logs-hf'
+FILE_SIZES_NAME = 'file_sizes.log'
+FILE_SIZES_DIR = 'logs-hf'
 METRICS_FILE = 'metrics.jsonl'
 DEST_DIR = './'
 JOB_DESCRIPTIONS_FILE = 'job_descriptions.jsonl'
@@ -60,8 +61,8 @@ class SystemInfoLogger:
 
 
 class JobDescriptionLogger:
-    def __init__(self, source_dir, file_name=JOB_DESCRIPTIONS_FILE):
-        self.log_map = {}
+    def __init__(self, hyperflow_id, job_id, source_dir, file_name=JOB_DESCRIPTIONS_FILE):
+        self.log_map = {'hyperflowId': hyperflow_id, 'jobId': job_id}
         self.time_format = '%Y-%m-%dT%H:%M:%S.%f'
         self.file_name = os.path.join(source_dir, file_name)
         os.makedirs(os.path.dirname(self.file_name), exist_ok=True)
@@ -74,7 +75,8 @@ class JobDescriptionLogger:
         self.log_map.update(new_dict)
 
     def set_job_end_time(self, job_end_time):
-        self.log_map['execTimeMs'] = int(datetime.strptime(job_end_time, self.time_format).timestamp() * 1000) - self.job_start_time
+        self.log_map['execTimeMs'] = int(
+            datetime.strptime(job_end_time, self.time_format).timestamp() * 1000) - self.job_start_time
 
     def append(self, key, value):
         self.log_map[key] = value
@@ -125,6 +127,10 @@ class LogParser:
     def parse_sysinfo(text):
         return re.match('Sysinfo[^{]*({.*})', text, re.I)
 
+    @staticmethod
+    def parse_file_sizes(text):
+        return re.match('.*signals": (.*),\s+\"ins.*', text, re.DOTALL)
+
 
 def save_log(log, dest_file):
     with open(dest_file, "a", encoding='utf-8') as f:
@@ -140,12 +146,13 @@ def save_log_list(logs, dest_file):
 
 
 def extract_job_info(filename):
-    matches = re.match(r'.*task-([A-Za-z0-9]+)__(\d+)__(\d+)__\d+\.log', filename)
+    matches = re.match(r'.*task-([A-Za-z0-9\-]+)__(\d+)__(\d+)__\d+\.log', filename)
     hf_id = matches.group(1)
     app_id = matches.group(2)
     proc_id = matches.group(3)
 
-    return {"hyperflowId": hf_id, "workflowId": "{}-{}".format(hf_id, app_id), "jobId": "{}-{}-{}".format(hf_id, app_id, proc_id)}
+    return {"hyperflowId": hf_id, "workflowId": "{}-{}".format(hf_id, app_id),
+            "jobId": "{}-{}-{}".format(hf_id, app_id, proc_id)}
 
 
 def split_logs(log_fd):
@@ -166,7 +173,16 @@ def load_file_lines(full_file_name):
         return list(split_logs(fd))
 
 
-def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logger):
+def extend_with_sizes(files_list, file_name_size_map):
+    result = []
+    for entry_map in files_list:
+        name = entry_map['name']
+        result.append({'name': name, 'size': file_name_size_map[name]})
+
+    return result
+
+
+def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logger, file_name_size_map):
     text = log['text']
     new_log = {'time': log['time']}
 
@@ -196,7 +212,9 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     if metric:
         message_dict = eval(metric.group(1))
         message_dict.pop('redis_url', None)
-        message_dict.pop('task_id', None)
+        message_dict.pop('taskId', None)
+        message_dict['inputs'] = extend_with_sizes(message_dict['inputs'], file_name_size_map)
+        message_dict['outputs'] = extend_with_sizes(message_dict['outputs'], file_name_size_map)
         metrics_logger.add_custom_field('name', message_dict['name'])
         job_description_logger.add_dict(message_dict)
         return
@@ -240,34 +258,51 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     return None
 
 
-def parse_and_save_json_log_file(basedir, dest_dir, filename):
+def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map):
     full_file_name = os.path.join(basedir, filename)
     lines = load_file_lines(full_file_name)
     context_info = extract_job_info(full_file_name)
 
     # loggers initialization
-    job_description_logger = JobDescriptionLogger(dest_dir)
+    job_description_logger = JobDescriptionLogger(context_info['hyperflowId'], context_info['jobId'], dest_dir)
     sys_info_logger = SystemInfoLogger(context_info['jobId'], dest_dir)
     metrics_logger = MetricsLogger(context_info['workflowId'], context_info['jobId'], dest_dir)
 
     for line_dict in lines:
-        parse_single_log(line_dict, job_description_logger, sys_info_logger, metrics_logger)
+        parse_single_log(line_dict, job_description_logger, sys_info_logger, metrics_logger, file_name_size_map)
 
     job_description_logger.save()
     sys_info_logger.save()
     metrics_logger.save()
 
 
-def parse_and_save_logs(base_dir, dest_dir):
+def load_file_sizes_map(base_dir, file_sizes_name):
+    full_file_name = os.path.join(base_dir, file_sizes_name)
+    with open(full_file_name) as fd:
+        body = fd.read()
+
+    matcher = LogParser.parse_file_sizes(body)
+    if matcher:
+        source_list = eval(matcher.group(1))
+        file_name_size_map = {}
+        for source_map in source_list:
+            size = source_map['size'] if 'size' in source_map else 0
+            file_name_size_map[source_map['name']] = size
+        return file_name_size_map
+    return {}
+
+
+def parse_and_save_logs(base_dir, dest_dir, file_sizes_dir):
+    file_name_size_map = load_file_sizes_map(file_sizes_dir, FILE_SIZES_NAME)
     for file in os.listdir(base_dir):
         if file.endswith("1.log"):
-            parse_and_save_json_log_file(base_dir, dest_dir, file)
+            parse_and_save_json_log_file(base_dir, dest_dir, file, file_name_size_map)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Workflow logs parser!')
     parser.add_argument('-s', type=str, default=SOURCE_DIR, help='Logs source directory')
     parser.add_argument('-d', type=str, default=DEST_DIR, help='Logs destination directory')
+    parser.add_argument('-f', type=str, default=FILE_SIZES_DIR, help='file-size.log directory')
     args = parser.parse_args()
-
-    parse_and_save_logs(args.s, args.d)
+    parse_and_save_logs(args.s, args.d, args.f)
