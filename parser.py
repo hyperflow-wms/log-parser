@@ -129,7 +129,7 @@ class LogParser:
 
     @staticmethod
     def parse_file_sizes(text):
-        return re.match('.*signals": (.*),\s+\"ins.*', text, re.DOTALL)
+        return re.match('[^{]*({.*}).*', text, re.DOTALL)
 
 
 def save_log(log, dest_file):
@@ -177,6 +177,8 @@ def extend_with_sizes(files_list, file_name_size_map):
     result = []
     for entry_map in files_list:
         name = entry_map['name']
+        if name == 'Gmax_275_v2.0.fa.sa':
+            print(name)
         result.append({'name': name, 'size': file_name_size_map[name]})
 
     return result
@@ -283,7 +285,7 @@ def load_file_sizes_map(base_dir, file_sizes_name):
 
     matcher = LogParser.parse_file_sizes(body)
     if matcher:
-        source_list = eval(matcher.group(1))
+        source_list = eval(matcher.group(1))['signals']
         file_name_size_map = {}
         for source_map in source_list:
             size = source_map['size'] if 'size' in source_map else 0
