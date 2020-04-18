@@ -177,8 +177,6 @@ def extend_with_sizes(files_list, file_name_size_map):
     result = []
     for entry_map in files_list:
         name = entry_map['name']
-        if name == 'Gmax_275_v2.0.fa.sa':
-            print(name)
         result.append({'name': name, 'size': file_name_size_map[name]})
 
     return result
