@@ -1,4 +1,4 @@
-# Hyperflow log parser
+# HyperFlow log parser
 
 ## How to run parser?
 
