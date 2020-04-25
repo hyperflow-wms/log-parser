@@ -10,6 +10,22 @@ You can use optional run parameters:
 e.g.
 `python3 parser.py -s logs-hf -d parsed-logs -f logs-hf`
 
+# Files structure
+
+Logs are written to directory with name pattern `<dest_dir>/<workflow_name>__<workflow_size>__<version>__<date_time>`, where:
+ * `dest_dir` - destination directory from run parameters,
+ * `workflow_name` - extracted from `file-sizes.log` file, `undefined` if `name` key does not exist,
+ * `workflow_size` - extracted from `file-sizes.log` file, number of processes if `size` key does not exist,
+ * `version` - extracted from `file-sizes.log` file, `1.0.0` if `version` key does not exist,
+ * `date_time`- timestamp in `%Y-%m-%d-%H-%M-%S` format
+ 
+ eg. `montage__0.25__1.0.0__2020-04-20-12-01-24`,
+ 
+ Parser generates following files in [JSON lines](http://jsonlines.org/) format:
+ * `job_descriptions.jsonl`
+ * `sys_info.jsonl`
+ * `metrics.jsonl`
+
 # Parsed data structure
 
 Identifiers:
@@ -21,6 +37,9 @@ Identifiers:
 ## Job descriptions
 ```json
 {
+   "workflowName":"montage",
+   "size":"0.25",
+   "version":"1.0.0",
    "hyperflowId":"6ZYgjDbbG",
    "jobId":"6ZYgjDbbG-1-29",
    "executable":"mBgModel",

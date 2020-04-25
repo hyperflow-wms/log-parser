@@ -21,7 +21,6 @@ class MetricsLogger:
             'jobId': job_id
         }
         self.file_name = os.path.join(source_dir, file_name)
-        os.makedirs(os.path.dirname(self.file_name), exist_ok=True)
 
     def append_log(self, base_log, parameter, value):
         base_log.update(self.custom_fields)
@@ -49,7 +48,6 @@ class SystemInfoLogger:
         self.log_list = []
         self.job_id = job_id
         self.file_name = os.path.join(source_dir, file_name)
-        os.makedirs(os.path.dirname(self.file_name), exist_ok=True)
 
     def append(self, log):
         log['jobId'] = self.job_id
@@ -61,11 +59,16 @@ class SystemInfoLogger:
 
 
 class JobDescriptionLogger:
-    def __init__(self, hyperflow_id, job_id, source_dir, file_name=JOB_DESCRIPTIONS_FILE):
-        self.log_map = {'hyperflowId': hyperflow_id, 'jobId': job_id}
+    def __init__(self, hyperflow_id, job_id, source_dir, workflow_info, file_name=JOB_DESCRIPTIONS_FILE):
+        self.log_map = {
+            'workflowName': workflow_info['workflowName'],
+            'size': workflow_info['size'],
+            'version': workflow_info['version'],
+            'hyperflowId': hyperflow_id,
+            'jobId': job_id
+        }
         self.time_format = '%Y-%m-%dT%H:%M:%S.%f'
         self.file_name = os.path.join(source_dir, file_name)
-        os.makedirs(os.path.dirname(self.file_name), exist_ok=True)
         self.job_start_time = 0
 
     def set_job_start_time(self, job_start_time):
@@ -261,13 +264,23 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     return None
 
 
-def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map):
+def prepare_logs_dest_dir(dest_dir, workflow_info):
+    logs_dir_name = os.path.join(dest_dir, "{}__{}__{}__{}".format(workflow_info['workflowName'],
+                                                                   workflow_info['size'],
+                                                                   workflow_info['version'],
+                                                                   datetime.now().strftime('%Y-%m-%d-%H-%M-%S')))
+    os.makedirs(logs_dir_name, exist_ok=True)
+    return logs_dir_name
+
+
+def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map, workflow_info):
     full_file_name = os.path.join(basedir, filename)
     lines = load_file_lines(full_file_name)
     context_info = extract_job_info(full_file_name)
 
     # loggers initialization
-    job_description_logger = JobDescriptionLogger(context_info['hyperflowId'], context_info['jobId'], dest_dir)
+    job_description_logger = JobDescriptionLogger(context_info['hyperflowId'], context_info['jobId'], dest_dir,
+                                                  workflow_info)
     sys_info_logger = SystemInfoLogger(context_info['jobId'], dest_dir)
     metrics_logger = MetricsLogger(context_info['workflowId'], context_info['jobId'], dest_dir)
 
@@ -279,27 +292,35 @@ def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map
     metrics_logger.save()
 
 
-def load_file_sizes_map(base_dir, file_sizes_name):
+def extract_workflow_info(base_dir, file_sizes_name):
     full_file_name = os.path.join(base_dir, file_sizes_name)
     with open(full_file_name) as fd:
         body = fd.read()
 
     matcher = LogParser.parse_file_sizes(body)
     if matcher:
-        source_list = eval(matcher.group(1))['signals']
+        source_json = eval(matcher.group(1))
+        signals_list = source_json['signals']
         file_name_size_map = {}
-        for source_map in source_list:
+        for source_map in signals_list:
             size = source_map['size'] if 'size' in source_map else 0
             file_name_size_map[source_map['name']] = size
-        return file_name_size_map
-    return {}
+
+        workflow_info = {
+            "workflowName": source_json['name'] if 'name' in source_json else "undefined",
+            "size": source_json['size'] if 'size' in source_json else len(source_json['processes']),
+            "version": source_json['version'] if 'version' in source_json else "1.0.0"
+        }
+        return file_name_size_map, workflow_info
+    return {}, {}
 
 
 def parse_and_save_logs(base_dir, dest_dir, file_sizes_dir):
-    file_name_size_map = load_file_sizes_map(file_sizes_dir, FILE_SIZES_NAME)
+    file_name_size_map, workflow_info = extract_workflow_info(file_sizes_dir, FILE_SIZES_NAME)
+    logs_dest_dir = prepare_logs_dest_dir(dest_dir, workflow_info)
     for file in os.listdir(base_dir):
         if file.endswith("1.log"):
-            parse_and_save_json_log_file(base_dir, dest_dir, file, file_name_size_map)
+            parse_and_save_json_log_file(base_dir, logs_dest_dir, file, file_name_size_map, workflow_info)
 
 
 if __name__ == '__main__':
