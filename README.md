@@ -5,10 +5,10 @@
 You can use optional run parameters:
 - -s - to specify logs source directory (by default `logs-hf` is set)
 - -d - to specify logs destination directory (by default `./` is set)
-- -f - to specify `file-sizes.log` file directory (by default `logs-hf` is set)
+- -w - to specify `workflow.json` file path (by default `./` is set)
 
 e.g.
-`python3 parser.py -s logs-hf -d parsed-logs -f logs-hf`
+`python3 parser.py -s logs-hf -d parsed-logs -w workflow.json`
 
 # Files structure
 

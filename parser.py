@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
 import argparse
 import json
 import os
 import re
+import ast
 from datetime import datetime
 
 SOURCE_DIR = 'logs-hf'
-FILE_SIZES_NAME = 'file_sizes.log'
+WORKFLOW_JSON = 'workflow.json'
 FILE_SIZES_DIR = 'logs-hf'
 METRICS_FILE = 'metrics.jsonl'
 DEST_DIR = './'
@@ -129,10 +131,14 @@ class LogParser:
     @staticmethod
     def parse_sysinfo(text):
         return re.match('Sysinfo[^{]*({.*})', text, re.I)
-
+    
     @staticmethod
-    def parse_file_sizes(text):
-        return re.match('[^{]*({.*}).*', text, re.DOTALL)
+    def parse_inputs(text):
+        return re.match('Job\sinputs:\s+(\[.*\])', text, re.I)
+    
+    @staticmethod
+    def parse_outputs(text):
+        return re.match('Job\soutputs:\s+(\[.*\])', text, re.I)
 
 
 def save_log(log, dest_file):
@@ -188,7 +194,7 @@ def extend_with_sizes(files_list, file_name_size_map):
     return result
 
 
-def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logger, file_name_size_map):
+def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logger):
     text = log['text']
     new_log = {'time': log['time']}
 
@@ -219,8 +225,6 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
         message_dict = eval(metric.group(1))
         message_dict.pop('redis_url', None)
         message_dict.pop('taskId', None)
-        message_dict['inputs'] = extend_with_sizes(message_dict['inputs'], file_name_size_map)
-        message_dict['outputs'] = extend_with_sizes(message_dict['outputs'], file_name_size_map)
         metrics_logger.add_custom_field('name', message_dict['name'])
         job_description_logger.add_dict(message_dict)
         return
@@ -260,6 +264,24 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     if metric:
         sys_info_logger.append(eval(metric.group(1)))
         return
+    
+    metric = LogParser.parse_inputs(text)
+    if metric:
+        file_dict_tuple = ast.literal_eval(metric.group(1).strip())
+        file_sizes_dict = {}
+        for file_dict in file_dict_tuple:
+            file_sizes_dict.update(file_dict)
+        job_description_logger.log_map['inputs'] = extend_with_sizes(job_description_logger.log_map['inputs'], file_sizes_dict)
+        return
+    
+    metric = LogParser.parse_outputs(text)
+    if metric:
+        file_dict_tuple = ast.literal_eval(metric.group(1).strip())
+        file_sizes_dict = {}
+        for file_dict in file_dict_tuple:
+            file_sizes_dict.update(file_dict)
+        job_description_logger.log_map['outputs'] = extend_with_sizes(job_description_logger.log_map['outputs'], file_sizes_dict)
+        return
 
     return None
 
@@ -273,7 +295,7 @@ def prepare_logs_dest_dir(dest_dir, workflow_info):
     return logs_dir_name
 
 
-def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map, workflow_info):
+def parse_and_save_json_log_file(basedir, dest_dir, filename, workflow_info):
     full_file_name = os.path.join(basedir, filename)
     lines = load_file_lines(full_file_name)
     context_info = extract_job_info(full_file_name)
@@ -285,48 +307,37 @@ def parse_and_save_json_log_file(basedir, dest_dir, filename, file_name_size_map
     metrics_logger = MetricsLogger(context_info['workflowId'], context_info['jobId'], dest_dir)
 
     for line_dict in lines:
-        parse_single_log(line_dict, job_description_logger, sys_info_logger, metrics_logger, file_name_size_map)
+        parse_single_log(line_dict, job_description_logger, sys_info_logger, metrics_logger)
 
     job_description_logger.save()
     sys_info_logger.save()
     metrics_logger.save()
 
 
-def extract_workflow_info(base_dir, file_sizes_name):
-    full_file_name = os.path.join(base_dir, file_sizes_name)
-    with open(full_file_name) as fd:
-        body = fd.read()
+def extract_workflow_info(workflow_json_path):
+    with open(workflow_json_path) as workflow:
+        source_json = json.load(workflow)
 
-    matcher = LogParser.parse_file_sizes(body)
-    if matcher:
-        source_json = eval(matcher.group(1))
-        signals_list = source_json['signals']
-        file_name_size_map = {}
-        for source_map in signals_list:
-            size = source_map['size'] if 'size' in source_map else 0
-            file_name_size_map[source_map['name']] = size
-
-        workflow_info = {
-            "workflowName": source_json['name'] if 'name' in source_json else "undefined",
-            "size": source_json['size'] if 'size' in source_json else len(source_json['processes']),
-            "version": source_json['version'] if 'version' in source_json else "1.0.0"
-        }
-        return file_name_size_map, workflow_info
-    return {}, {}
+    workflow_info = {
+        "workflowName": source_json['name'] if 'name' in source_json else "undefined",
+        "size": source_json['size'] if 'size' in source_json else len(source_json['processes']),
+        "version": source_json['version'] if 'version' in source_json else "1.0.0"
+    }
+    return workflow_info
 
 
-def parse_and_save_logs(base_dir, dest_dir, file_sizes_dir):
-    file_name_size_map, workflow_info = extract_workflow_info(file_sizes_dir, FILE_SIZES_NAME)
+def parse_and_save_logs(base_dir, dest_dir, workflow_json_path):
+    workflow_info = extract_workflow_info(workflow_json_path)
     logs_dest_dir = prepare_logs_dest_dir(dest_dir, workflow_info)
     for file in os.listdir(base_dir):
         if file.endswith("1.log"):
-            parse_and_save_json_log_file(base_dir, logs_dest_dir, file, file_name_size_map, workflow_info)
+            parse_and_save_json_log_file(base_dir, logs_dest_dir, file, workflow_info)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Workflow logs parser!')
-    parser.add_argument('-s', type=str, default=SOURCE_DIR, help='Logs source directory')
-    parser.add_argument('-d', type=str, default=DEST_DIR, help='Logs destination directory')
-    parser.add_argument('-f', type=str, default=FILE_SIZES_DIR, help='file-size.log directory')
+    parser.add_argument('-s', '--source', type=str, default=SOURCE_DIR, help='Logs source directory')
+    parser.add_argument('-d', '--destination', type=str, default=DEST_DIR, help='Parsed logs destination directory')
+    parser.add_argument('-w', '--workflow', type=str, default=WORKFLOW_JSON, help='workflow.json path')
     args = parser.parse_args()
-    parse_and_save_logs(args.s, args.d, args.f)
+    parse_and_save_logs(args.source, args.destination, args.workflow)

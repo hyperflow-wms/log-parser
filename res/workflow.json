@@ -1,0 +1,1134 @@
+{
+    "ins": [
+        0, 
+        1, 
+        4, 
+        8, 
+        10, 
+        12, 
+        17, 
+        19, 
+        23, 
+        26, 
+        30, 
+        32, 
+        34, 
+        39, 
+        44, 
+        47, 
+        51, 
+        53, 
+        55, 
+        60
+    ], 
+    "name": "montage2", 
+    "outs": [
+        21, 
+        22, 
+        41, 
+        43, 
+        63, 
+        64, 
+        65
+    ], 
+    "processes": [
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-980914s-j0820044.fits", 
+                        "p2mass-atlas-980914s-j0820044.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                0, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                2, 
+                3
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-001021s-j0490233.fits", 
+                        "p2mass-atlas-001021s-j0490233.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                4, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                5, 
+                6
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-d", 
+                        "-s", 
+                        "1-fit.000001.000002.txt", 
+                        "p2mass-atlas-980914s-j0820044.fits", 
+                        "p2mass-atlas-001021s-j0490233.fits", 
+                        "1-diff.000001.000002.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mDiffFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                5, 
+                2, 
+                1, 
+                6, 
+                3
+            ], 
+            "name": "mDiffFit", 
+            "outs": [
+                7
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "1-stat.tbl", 
+                        "1-fits.tbl", 
+                        "."
+                    ], 
+                    "executable": "mConcatFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                7, 
+                8
+            ], 
+            "name": "mConcatFit", 
+            "outs": [
+                9
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-i", 
+                        "100000", 
+                        "1-images.tbl", 
+                        "1-fits.tbl", 
+                        "1-corrections.tbl"
+                    ], 
+                    "executable": "mBgModel"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                9, 
+                10
+            ], 
+            "name": "mBgModel", 
+            "outs": [
+                11
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-980914s-j0820044.fits", 
+                        "c2mass-atlas-980914s-j0820044.fits", 
+                        "1-projected.tbl", 
+                        "1-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                2, 
+                11, 
+                12, 
+                3
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                13, 
+                14
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-001021s-j0490233.fits", 
+                        "c2mass-atlas-001021s-j0490233.fits", 
+                        "1-projected.tbl", 
+                        "1-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                5, 
+                12, 
+                11, 
+                6
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                15, 
+                16
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "1-corrected.tbl", 
+                        ".", 
+                        "1-updated-corrected.tbl"
+                    ], 
+                    "executable": "mImgtbl"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                17, 
+                15, 
+                14
+            ], 
+            "name": "mImgtbl", 
+            "outs": [
+                18
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-e", 
+                        "1-updated-corrected.tbl", 
+                        "region.hdr", 
+                        "1-mosaic.fits"
+                    ], 
+                    "executable": "mAdd"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                13, 
+                19, 
+                18, 
+                14, 
+                15, 
+                16
+            ], 
+            "name": "mAdd", 
+            "outs": [
+                20, 
+                21
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-ct", 
+                        "0", 
+                        "-gray", 
+                        "1-mosaic.fits", 
+                        "0s", 
+                        "99.999%", 
+                        "gaussian", 
+                        "-out", 
+                        "1-mosaic.jpg"
+                    ], 
+                    "executable": "mViewer"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                20
+            ], 
+            "name": "mViewer", 
+            "outs": [
+                22
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-980914s-h0820044.fits", 
+                        "p2mass-atlas-980914s-h0820044.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                23, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                24, 
+                25
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-001021s-h0490233.fits", 
+                        "p2mass-atlas-001021s-h0490233.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                26, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                27, 
+                28
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-d", 
+                        "-s", 
+                        "2-fit.000001.000002.txt", 
+                        "p2mass-atlas-980914s-h0820044.fits", 
+                        "p2mass-atlas-001021s-h0490233.fits", 
+                        "2-diff.000001.000002.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mDiffFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                25, 
+                27, 
+                1, 
+                24, 
+                28
+            ], 
+            "name": "mDiffFit", 
+            "outs": [
+                29
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "2-stat.tbl", 
+                        "2-fits.tbl", 
+                        "."
+                    ], 
+                    "executable": "mConcatFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                29, 
+                30
+            ], 
+            "name": "mConcatFit", 
+            "outs": [
+                31
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-i", 
+                        "100000", 
+                        "2-images.tbl", 
+                        "2-fits.tbl", 
+                        "2-corrections.tbl"
+                    ], 
+                    "executable": "mBgModel"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                31, 
+                32
+            ], 
+            "name": "mBgModel", 
+            "outs": [
+                33
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-980914s-h0820044.fits", 
+                        "c2mass-atlas-980914s-h0820044.fits", 
+                        "2-projected.tbl", 
+                        "2-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                33, 
+                25, 
+                34, 
+                24
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                35, 
+                36
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-001021s-h0490233.fits", 
+                        "c2mass-atlas-001021s-h0490233.fits", 
+                        "2-projected.tbl", 
+                        "2-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                33, 
+                34, 
+                27, 
+                28
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                37, 
+                38
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "2-corrected.tbl", 
+                        ".", 
+                        "2-updated-corrected.tbl"
+                    ], 
+                    "executable": "mImgtbl"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                35, 
+                39, 
+                38
+            ], 
+            "name": "mImgtbl", 
+            "outs": [
+                40
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-e", 
+                        "2-updated-corrected.tbl", 
+                        "region.hdr", 
+                        "2-mosaic.fits"
+                    ], 
+                    "executable": "mAdd"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                35, 
+                36, 
+                19, 
+                40, 
+                38, 
+                37
+            ], 
+            "name": "mAdd", 
+            "outs": [
+                41, 
+                42
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-ct", 
+                        "0", 
+                        "-gray", 
+                        "2-mosaic.fits", 
+                        "0s", 
+                        "99.999%", 
+                        "gaussian", 
+                        "-out", 
+                        "2-mosaic.jpg"
+                    ], 
+                    "executable": "mViewer"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                42
+            ], 
+            "name": "mViewer", 
+            "outs": [
+                43
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-001021s-k0490233.fits", 
+                        "p2mass-atlas-001021s-k0490233.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                44, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                45, 
+                46
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-X", 
+                        "2mass-atlas-980914s-k0820044.fits", 
+                        "p2mass-atlas-980914s-k0820044.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mProject"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                47, 
+                1
+            ], 
+            "name": "mProject", 
+            "outs": [
+                48, 
+                49
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-d", 
+                        "-s", 
+                        "3-fit.000001.000002.txt", 
+                        "p2mass-atlas-001021s-k0490233.fits", 
+                        "p2mass-atlas-980914s-k0820044.fits", 
+                        "3-diff.000001.000002.fits", 
+                        "region-oversized.hdr"
+                    ], 
+                    "executable": "mDiffFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                1, 
+                48, 
+                46, 
+                49, 
+                45
+            ], 
+            "name": "mDiffFit", 
+            "outs": [
+                50
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "3-stat.tbl", 
+                        "3-fits.tbl", 
+                        "."
+                    ], 
+                    "executable": "mConcatFit"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                50, 
+                51
+            ], 
+            "name": "mConcatFit", 
+            "outs": [
+                52
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-i", 
+                        "100000", 
+                        "3-images.tbl", 
+                        "3-fits.tbl", 
+                        "3-corrections.tbl"
+                    ], 
+                    "executable": "mBgModel"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                53, 
+                52
+            ], 
+            "name": "mBgModel", 
+            "outs": [
+                54
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-001021s-k0490233.fits", 
+                        "c2mass-atlas-001021s-k0490233.fits", 
+                        "3-projected.tbl", 
+                        "3-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                55, 
+                54, 
+                46, 
+                45
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                56, 
+                57
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "p2mass-atlas-980914s-k0820044.fits", 
+                        "c2mass-atlas-980914s-k0820044.fits", 
+                        "3-projected.tbl", 
+                        "3-corrections.tbl"
+                    ], 
+                    "executable": "mBackground"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                48, 
+                55, 
+                54, 
+                49
+            ], 
+            "name": "mBackground", 
+            "outs": [
+                58, 
+                59
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-t", 
+                        "3-corrected.tbl", 
+                        ".", 
+                        "3-updated-corrected.tbl"
+                    ], 
+                    "executable": "mImgtbl"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                60, 
+                59, 
+                57
+            ], 
+            "name": "mImgtbl", 
+            "outs": [
+                61
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-e", 
+                        "3-updated-corrected.tbl", 
+                        "region.hdr", 
+                        "3-mosaic.fits"
+                    ], 
+                    "executable": "mAdd"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                61, 
+                19, 
+                58, 
+                56, 
+                59, 
+                57
+            ], 
+            "name": "mAdd", 
+            "outs": [
+                62, 
+                63
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-ct", 
+                        "0", 
+                        "-gray", 
+                        "3-mosaic.fits", 
+                        "0s", 
+                        "99.999%", 
+                        "gaussian", 
+                        "-out", 
+                        "3-mosaic.jpg"
+                    ], 
+                    "executable": "mViewer"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                62
+            ], 
+            "name": "mViewer", 
+            "outs": [
+                64
+            ], 
+            "type": "dataflow"
+        }, 
+        {
+            "config": {
+                "executor": {
+                    "args": [
+                        "-red", 
+                        "1-mosaic.fits", 
+                        "-1s", 
+                        "99.999%", 
+                        "gaussian-log", 
+                        "-green", 
+                        "2-mosaic.fits", 
+                        "-1s", 
+                        "99.999%", 
+                        "gaussian-log", 
+                        "-blue", 
+                        "3-mosaic.fits", 
+                        "-1s", 
+                        "99.999%", 
+                        "gaussian-log", 
+                        "-out", 
+                        "mosaic-color.jpg"
+                    ], 
+                    "executable": "mViewer"
+                }
+            }, 
+            "firingLimit": 1, 
+            "function": "{{function}}", 
+            "ins": [
+                62, 
+                20, 
+                42
+            ], 
+            "name": "mViewer", 
+            "outs": [
+                65
+            ], 
+            "type": "dataflow"
+        }
+    ], 
+    "signals": [
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-980914s-j0820044.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "region-oversized.hdr"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-j0820044.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-j0820044_area.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-001021s-j0490233.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-j0490233.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-j0490233_area.fits"
+        }, 
+        {
+            "name": "1-fit.000001.000002.txt"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "1-stat.tbl"
+        }, 
+        {
+            "name": "1-fits.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "1-images.tbl"
+        }, 
+        {
+            "name": "1-corrections.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "1-projected.tbl"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-j0820044_area.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-j0820044.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-j0490233.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-j0490233_area.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "1-corrected.tbl"
+        }, 
+        {
+            "name": "1-updated-corrected.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "region.hdr"
+        }, 
+        {
+            "name": "1-mosaic.fits"
+        }, 
+        {
+            "name": "1-mosaic_area.fits"
+        }, 
+        {
+            "name": "1-mosaic.jpg"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-980914s-h0820044.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-h0820044_area.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-h0820044.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-001021s-h0490233.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-h0490233_area.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-h0490233.fits"
+        }, 
+        {
+            "name": "2-fit.000001.000002.txt"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2-stat.tbl"
+        }, 
+        {
+            "name": "2-fits.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2-images.tbl"
+        }, 
+        {
+            "name": "2-corrections.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2-projected.tbl"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-h0820044.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-h0820044_area.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-h0490233_area.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-h0490233.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2-corrected.tbl"
+        }, 
+        {
+            "name": "2-updated-corrected.tbl"
+        }, 
+        {
+            "name": "2-mosaic_area.fits"
+        }, 
+        {
+            "name": "2-mosaic.fits"
+        }, 
+        {
+            "name": "2-mosaic.jpg"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-001021s-k0490233.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-k0490233_area.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-001021s-k0490233.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "2mass-atlas-980914s-k0820044.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-k0820044_area.fits"
+        }, 
+        {
+            "name": "p2mass-atlas-980914s-k0820044.fits"
+        }, 
+        {
+            "name": "3-fit.000001.000002.txt"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "3-stat.tbl"
+        }, 
+        {
+            "name": "3-fits.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "3-images.tbl"
+        }, 
+        {
+            "name": "3-corrections.tbl"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "3-projected.tbl"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-k0490233_area.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-001021s-k0490233.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-k0820044_area.fits"
+        }, 
+        {
+            "name": "c2mass-atlas-980914s-k0820044.fits"
+        }, 
+        {
+            "data": [
+                {}
+            ], 
+            "name": "3-corrected.tbl"
+        }, 
+        {
+            "name": "3-updated-corrected.tbl"
+        }, 
+        {
+            "name": "3-mosaic.fits"
+        }, 
+        {
+            "name": "3-mosaic_area.fits"
+        }, 
+        {
+            "name": "3-mosaic.jpg"
+        }, 
+        {
+            "name": "mosaic-color.jpg"
+        }
+    ], 
+    "size": "0.01", 
+    "version": "1.0.0"
+}

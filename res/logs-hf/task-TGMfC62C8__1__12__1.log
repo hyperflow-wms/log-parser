@@ -1,0 +1,51 @@
+[2020-05-03T21:33:01.792] [INFO] hftrace - handler started
+[2020-05-03T21:33:01.796] [ERROR] hftrace - nethogs execution error: Error: spawn nethogs-wrapper.py ENOENT
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:267:19)
+    at onErrorNT (internal/child_process.js:469:16)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21) {
+  errno: 'ENOENT',
+  code: 'ENOENT',
+  syscall: 'spawn nethogs-wrapper.py',
+  path: 'nethogs-wrapper.py',
+  spawnargs: []
+}
+[2020-05-03T21:33:01.815] [INFO] hftrace - jobMessage:  [
+  'TGMfC62C8:1:12:1_msg',
+  '{"executable":"mProject","args":["-X","2mass-atlas-001021s-h0490233.fits","p2mass-atlas-001021s-h0490233.fits","region-oversized.hdr"],"inputs":[{"name":"region-oversized.hdr","_id":2,"data":[{}],"sigIdx":1},{"name":"2mass-atlas-001021s-h0490233.fits","_id":27,"data":[{}],"sigIdx":1}],"outputs":[{"name":"p2mass-atlas-001021s-h0490233_area.fits"},{"name":"p2mass-atlas-001021s-h0490233.fits"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"TGMfC62C8:1:12:1","name":"mProject"}'
+]
+[2020-05-03T21:33:01.816] [INFO] hftrace - Job command: 'mProject -X 2mass-atlas-001021s-h0490233.fits p2mass-atlas-001021s-h0490233.fits region-oversized.hdr'
+[2020-05-03T21:33:01.826] [INFO] hftrace - command: {"pid":18,"name":"mProject","command":["mProject","-X","2mass-atlas-001021s-h0490233.fits","p2mass-atlas-001021s-h0490233.fits","region-oversized.hdr"]}
+[2020-05-03T21:33:01.827] [INFO] hftrace - IO: {"read":2250,"write":1,"readSyscalls":6,"writeSyscalls":1,"readReal":16384,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:01.829] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":5894,"rxPackets":19,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1379,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:01.839] [INFO] hftrace - job started: mProject
+[2020-05-03T21:33:01.871] [INFO] hftrace - Procusage: pid: 18 {"cpu":0,"memory":2490368,"ctime":30,"elapsed":40,"timestamp":1588541581871,"pid":18,"ppid":6}
+[2020-05-03T21:33:01.874] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"","family":"","model":"","stepping":"","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":4,"physicalCores":4,"processors":1,"socket":"","cache":{"l1d":"","l1i":"","l2":"","l3":""}},"mem":{"total":4140511232,"free":155623424,"used":3984887808,"active":1252950016,"available":2887561216,"buffers":206168064,"cached":2510684160,"slab":416956416,"buffcache":3133808640,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-03T21:33:03.829] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:03.831] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6794,"rxPackets":28,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1445,"txPackets":17,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:03.879] [INFO] hftrace - Procusage: pid: 18 {"cpu":99.5049504950495,"memory":12439552,"ctime":2040,"elapsed":2060,"timestamp":1588541583878,"pid":18,"ppid":6}
+[2020-05-03T21:33:05.830] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:05.832] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6794,"rxPackets":28,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1445,"txPackets":17,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:05.880] [INFO] hftrace - Procusage: pid: 18 {"cpu":100,"memory":12439552,"ctime":4040,"elapsed":4060,"timestamp":1588541585880,"pid":18,"ppid":6}
+[2020-05-03T21:33:07.831] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:07.833] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6906,"rxPackets":30,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1487,"txPackets":18,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:07.882] [INFO] hftrace - Procusage: pid: 18 {"cpu":99.50248756218906,"memory":12439552,"ctime":6040,"elapsed":6070,"timestamp":1588541587882,"pid":18,"ppid":6}
+[2020-05-03T21:33:09.833] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:09.835] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6906,"rxPackets":30,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1487,"txPackets":18,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:09.884] [INFO] hftrace - Procusage: pid: 18 {"cpu":100,"memory":12439552,"ctime":8040,"elapsed":8070,"timestamp":1588541589884,"pid":18,"ppid":6}
+[2020-05-03T21:33:11.834] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:11.836] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6906,"rxPackets":30,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1487,"txPackets":18,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:11.885] [INFO] hftrace - Procusage: pid: 18 {"cpu":100,"memory":12439552,"ctime":10040,"elapsed":10070,"timestamp":1588541591885,"pid":18,"ppid":6}
+[2020-05-03T21:33:13.834] [INFO] hftrace - IO: {"read":2946156,"write":1,"readSyscalls":112,"writeSyscalls":1,"readReal":1470464,"writeReal":0,"writeCancelled":0,"pid":18,"name":"mProject"}
+[2020-05-03T21:33:13.836] [INFO] hftrace - NetDev: pid: 18 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6906,"rxPackets":30,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1487,"txPackets":18,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:13.886] [INFO] hftrace - Procusage: pid: 18 {"cpu":100,"memory":12439552,"ctime":12040,"elapsed":12070,"timestamp":1588541593886,"pid":18,"ppid":6}
+[2020-05-03T21:33:15.834] [INFO] hftrace - job successful (try 1): mProject
+[2020-05-03T21:33:15.834] [INFO] hftrace - job exit code: 0
+[2020-05-03T21:33:15.838] [INFO] hftrace - Job inputs: [
+  { 'region-oversized.hdr': 277 },
+  { '2mass-atlas-001021s-h0490233.fits': 1469719 }
+]
+[2020-05-03T21:33:15.840] [INFO] hftrace - Job outputs: [
+  { 'p2mass-atlas-001021s-h0490233_area.fits': 4170240 },
+  { 'p2mass-atlas-001021s-h0490233.fits': 4170240 }
+]
+[2020-05-03T21:33:15.840] [INFO] hftrace - handler exiting

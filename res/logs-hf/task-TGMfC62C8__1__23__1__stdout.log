@@ -1,0 +1,82 @@
+SVC_DEBUG>  svc_debug(): ON<br>
+[mDiff p2mass-atlas-001021s-k0490233.fits p2mass-atlas-980914s-k0820044.fits 3-diff.000001.000002.fits region-oversized.hdr]
+SVC_DEBUG>  Entering svc_run()<br>
+SVC_DEBUG>  svc_run(): svcstr = [mDiff p2mass-atlas-001021s-k0490233.fits p2mass-atlas-980914s-k0820044.fits 3-diff.000001.000002.fits region-oversized.hdr]<br>
+SVC_DEBUG>  Entering svc_init()<br>
+SVC_DEBUG>  svc_init(): svcstr = [mDiff p2mass-atlas-001021s-k0490233.fits p2mass-atlas-980914s-k0820044.fits 3-diff.000001.000002.fits region-oversized.hdr]<br>
+SVC_DEBUG>  Entering svc_alloc()<br>
+SVC_DEBUG>  svc_alloc(): allocated 32 service slots [@0x562fd5bfa700]<br>
+SVC_DEBUG>  Entering svc_getargs()<br>
+SVC_DEBUG>  svc_init(): index = 0<br>
+SVC_DEBUG>  svc_init(): pid   = 20<br>
+SVC_DEBUG>  svc_init(): path  = mDiff<br>
+SVC_DEBUG>  svc_init(): fdin  = 5<br>
+SVC_DEBUG>  svc_init(): fdout = 6<br>
+SVC_DEBUG>  svc_run(): index (from svc_init()) = 0<br>
+SVC_DEBUG>  Entering svc_receive()<br>
+SVC_DEBUG>  Entering svc_fgets()<br>
+SVC_DEBUG>  svc_fgets(): Allocate string space [@0x562fd69b9520]<br>
+SVC_DEBUG>  Entering svc_check()<br>
+SVC_DEBUG>  svc_receive(): Receiving [[struct stat="OK", module="mDiff", time=0.0, min_pixel=2.98576e-12, max_pixel=2.58826e-08, min_diff=-198.606, max_diff=269.843]]<br>
+SVC_DEBUG>  Entering svc_close()<br>
+SVC_DEBUG>  Entering svc_check()<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [stat] -> [OK] [@0x562fd69b9020]<br>
+[mFitplane -b 0 3-diff.000001.000002.fits]
+SVC_DEBUG>  Entering svc_run()<br>
+SVC_DEBUG>  svc_run(): svcstr = [mFitplane -b 0 3-diff.000001.000002.fits]<br>
+SVC_DEBUG>  Entering svc_init()<br>
+SVC_DEBUG>  svc_init(): svcstr = [mFitplane -b 0 3-diff.000001.000002.fits]<br>
+SVC_DEBUG>  Entering svc_alloc()<br>
+SVC_DEBUG>  Entering svc_getargs()<br>
+SVC_DEBUG>  svc_init(): index = 0<br>
+SVC_DEBUG>  svc_init(): pid   = 31<br>
+SVC_DEBUG>  svc_init(): path  = mFitplane<br>
+SVC_DEBUG>  svc_init(): fdin  = 5<br>
+SVC_DEBUG>  svc_init(): fdout = 6<br>
+SVC_DEBUG>  svc_run(): index (from svc_init()) = 0<br>
+SVC_DEBUG>  Entering svc_receive()<br>
+SVC_DEBUG>  Entering svc_fgets()<br>
+SVC_DEBUG>  svc_fgets(): Allocate string space [@0x562fd69b9220]<br>
+SVC_DEBUG>  Entering svc_check()<br>
+SVC_DEBUG>  svc_receive(): Receiving [[struct stat="OK", module="mFitplane", a=0.00015407, b=-0.000288349, c=62.9616, crpix1=289.5, crpix2=501.5, xmin=-288.5, xmax=212.5, ymin=-500.5, ymax=323.5, xcenter=-38.1308, ycenter=-88.1333, npixel=351515, rms=0.9169, boxx=-38.5, boxy=-88.5, boxwidth=826, boxheight=502, boxang=90]]<br>
+SVC_DEBUG>  Entering svc_close()<br>
+SVC_DEBUG>  Entering svc_check()<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [stat] -> [OK] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [a] -> [0.00015407] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [b] -> [-0.000288349] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [c] -> [62.9616] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [crpix1] -> [289.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [crpix2] -> [501.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [xmin] -> [-288.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [xmax] -> [212.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [ymin] -> [-500.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [ymax] -> [323.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [xcenter] -> [-38.1308] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [ycenter] -> [-88.1333] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [npixel] -> [351515] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [rms] -> [0.9169] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [boxx] -> [-38.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [boxy] -> [-88.5] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [boxwidth] -> [826] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [boxheight] -> [502] [@0x7fc9f54815a0]<br>
+SVC_DEBUG>  Entering svc_value()<br>
+SVC_DEBUG>  svc_value(): [boxang] -> [90] [@0x7fc9f54815a0]<br>

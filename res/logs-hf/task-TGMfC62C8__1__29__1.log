@@ -1,0 +1,34 @@
+[2020-05-03T21:33:36.679] [INFO] hftrace - handler started
+[2020-05-03T21:33:36.683] [ERROR] hftrace - nethogs execution error: Error: spawn nethogs-wrapper.py ENOENT
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:267:19)
+    at onErrorNT (internal/child_process.js:469:16)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21) {
+  errno: 'ENOENT',
+  code: 'ENOENT',
+  syscall: 'spawn nethogs-wrapper.py',
+  path: 'nethogs-wrapper.py',
+  spawnargs: []
+}
+[2020-05-03T21:33:36.696] [INFO] hftrace - jobMessage:  [
+  'TGMfC62C8:1:29:1_msg',
+  '{"executable":"mAdd","args":["-e","3-updated-corrected.tbl","region.hdr","3-mosaic.fits"],"inputs":[{"name":"region.hdr","_id":20,"data":[{}],"sigIdx":1},{"name":"c2mass-atlas-001021s-k0490233_area.fits","_id":57,"source":26,"firingId":1,"sigIdx":1},{"name":"c2mass-atlas-001021s-k0490233.fits","_id":58,"source":26,"firingId":1,"sigIdx":1},{"name":"c2mass-atlas-980914s-k0820044_area.fits","_id":59,"source":27,"firingId":1,"sigIdx":1},{"name":"c2mass-atlas-980914s-k0820044.fits","_id":60,"source":27,"firingId":1,"sigIdx":1},{"name":"3-updated-corrected.tbl","_id":62,"source":28,"firingId":1,"sigIdx":1}],"outputs":[{"name":"3-mosaic.fits"},{"name":"3-mosaic_area.fits"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"TGMfC62C8:1:29:1","name":"mAdd"}'
+]
+[2020-05-03T21:33:36.697] [INFO] hftrace - Job command: 'mAdd -e 3-updated-corrected.tbl region.hdr 3-mosaic.fits'
+[2020-05-03T21:33:36.733] [INFO] hftrace - command: {"pid":19,"name":"mAdd","command":["mAdd","-e","3-updated-corrected.tbl","region.hdr","3-mosaic.fits"]}
+[2020-05-03T21:33:36.734] [INFO] hftrace - IO: {"read":1225,"write":1,"readSyscalls":5,"writeSyscalls":1,"readReal":409600,"writeReal":0,"writeCancelled":0,"pid":19,"name":"mAdd"}
+[2020-05-03T21:33:36.736] [INFO] hftrace - NetDev: pid: 19 [{"name":"eth0","rxBytes":5923,"rxPackets":14,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1337,"txPackets":15,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-03T21:33:36.744] [INFO] hftrace - job started: mAdd
+[2020-05-03T21:33:36.767] [INFO] hftrace - Procusage: pid: 19 {"cpu":0,"memory":884736,"ctime":0,"elapsed":60,"timestamp":1588541616767,"pid":19,"ppid":7}
+[2020-05-03T21:33:36.768] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"","family":"","model":"","stepping":"","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":4,"physicalCores":4,"processors":1,"socket":"","cache":{"l1d":"","l1i":"","l2":"","l3":""}},"mem":{"total":4140511232,"free":1588944896,"used":2551566336,"active":1355829248,"available":2784681984,"buffers":190300160,"cached":1058844672,"slab":327802880,"buffcache":1576947712,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-03T21:33:36.974] [INFO] hftrace - job successful (try 1): mAdd
+[2020-05-03T21:33:36.974] [INFO] hftrace - job exit code: 0
+[2020-05-03T21:33:36.976] [INFO] hftrace - Job inputs: [
+  { 'region.hdr': 269 },
+  { 'c2mass-atlas-001021s-k0490233_area.fits': 4144320 },
+  { 'c2mass-atlas-001021s-k0490233.fits': 4144320 },
+  { 'c2mass-atlas-980914s-k0820044_area.fits': 4144320 },
+  { 'c2mass-atlas-980914s-k0820044.fits': 4144320 },
+  { '3-updated-corrected.tbl': 1764 }
+]
+[2020-05-03T21:33:36.976] [INFO] hftrace - Job outputs: [ { '3-mosaic.fits': 14400 }, { '3-mosaic_area.fits': 14400 } ]
+[2020-05-03T21:33:36.976] [INFO] hftrace - handler exiting
