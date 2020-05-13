@@ -140,6 +140,9 @@ class LogParser:
     def parse_outputs(text):
         return re.match('Job\soutputs:\s+(\[.*\])', text, re.I)
 
+    @staticmethod
+    def parse_env_vars(text):
+        return re.match('Environment\s+variables\s+\(HF_LOG\):(.*)', text, re.I)
 
 def save_log(log, dest_file):
     with open(dest_file, "a", encoding='utf-8') as f:
@@ -281,6 +284,11 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
         for file_dict in file_dict_tuple:
             file_sizes_dict.update(file_dict)
         job_description_logger.log_map['outputs'] = extend_with_sizes(job_description_logger.log_map['outputs'], file_sizes_dict)
+        return
+    
+    metric = LogParser.parse_env_vars(text)
+    if metric:
+        job_description_logger.append('env', json.loads(metric.group(1)))
         return
 
     return None

@@ -1,0 +1,21 @@
+[2020-05-13T09:55:21.758] [INFO] hftrace - Environment variables (HF_LOG): {"podIp":"10.40.2.35","nodeName":"gke-cluster-x-default-pool-917ea268-mwwq","podName":"job0au0bl-mprojectpp-6-1-sdtjm","podServiceAccount":"default","podNamespace":"default"}
+[2020-05-13T09:55:21.778] [INFO] hftrace - handler started
+[2020-05-13T09:55:21.810] [INFO] hftrace - jobMessage:  [
+  'j6Bb_ZBMN:1:6:1_msg',
+  '{"executable":"mProjectPP","args":["-X","-x","0.90640","2mass-atlas-001124n-j0860044.fits","p2mass-atlas-001124n-j0860044.fits","big_region_20180402_165339_22325.hdr"],"inputs":[{"name":"big_region_20180402_165339_22325.hdr","_id":4,"data":[{}],"sigIdx":1},{"name":"2mass-atlas-001124n-j0860044.fits","_id":17,"data":[{}],"sigIdx":1}],"outputs":[{"name":"p2mass-atlas-001124n-j0860044.fits"},{"name":"p2mass-atlas-001124n-j0860044_area.fits"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"j6Bb_ZBMN:1:6:1","name":"mProjectPP"}'
+]
+[2020-05-13T09:55:21.821] [INFO] hftrace - Job command: 'mProjectPP -X -x 0.90640 2mass-atlas-001124n-j0860044.fits p2mass-atlas-001124n-j0860044.fits big_region_20180402_165339_22325.hdr'
+[2020-05-13T09:55:21.850] [INFO] hftrace - command: {"pid":23,"name":"mProjectPP","command":["mProjectPP","-X","-x","0.90640","2mass-atlas-001124n-j0860044.fits","p2mass-atlas-001124n-j0860044.fits","big_region_20180402_165339_22325.hdr"]}
+[2020-05-13T09:55:21.852] [INFO] hftrace - IO: {"read":2185,"write":1,"readSyscalls":6,"writeSyscalls":1,"readReal":0,"writeReal":0,"writeCancelled":0,"pid":23,"name":"mProjectPP"}
+[2020-05-13T09:55:21.860] [INFO] hftrace - NetDev: pid: 23 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":5956,"rxPackets":18,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1402,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:21.896] [INFO] hftrace - job started: mProjectPP
+[2020-05-13T09:55:21.976] [INFO] hftrace - Procusage: pid: 23 {"cpu":0,"memory":3371008,"ctime":40,"elapsed":120,"timestamp":1589363721976,"pid":23,"ppid":11}
+[2020-05-13T09:55:22.026] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"GenuineIntel","family":"6","model":"85","stepping":"3","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":2,"physicalCores":1,"processors":1,"socket":"","cache":{"l1d":32768,"l1i":32768,"l2":1048576,"l3":40370176}},"mem":{"total":2092941312,"free":187396096,"used":1905545216,"active":886476800,"available":1206464512,"buffers":57872384,"cached":1023188992,"slab":185180160,"buffcache":1266241536,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-13T09:55:23.855] [INFO] hftrace - IO: {"read":3278220,"write":8127361,"readSyscalls":124,"writeSyscalls":2823,"readReal":1634304,"writeReal":8134656,"writeCancelled":0,"pid":23,"name":"mProjectPP"}
+[2020-05-13T09:55:23.861] [INFO] hftrace - NetDev: pid: 23 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6766,"rxPackets":26,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1402,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:23.978] [INFO] hftrace - Procusage: pid: 23 {"cpu":57.635467980295566,"memory":10641408,"ctime":1210,"elapsed":2150,"timestamp":1589363723978,"pid":23,"ppid":11}
+[2020-05-13T09:55:24.148] [INFO] hftrace - job successful (try 1): mProjectPP
+[2020-05-13T09:55:24.148] [INFO] hftrace - job exit code: 0
+[2020-05-13T09:55:24.151] [INFO] hftrace - Job inputs: [{"big_region_20180402_165339_22325.hdr":306},{"2mass-atlas-001124n-j0860044.fits":1633094}]
+[2020-05-13T09:55:24.151] [INFO] hftrace - Job outputs: [{"p2mass-atlas-001124n-j0860044.fits":4121280},{"p2mass-atlas-001124n-j0860044_area.fits":4121280}]
+[2020-05-13T09:55:24.151] [INFO] hftrace - handler exiting

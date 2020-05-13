@@ -1,0 +1,18 @@
+[2020-05-13T09:55:50.928] [INFO] hftrace - Environment variables (HF_LOG): {"podIp":"10.40.1.45","nodeName":"gke-cluster-x-default-pool-917ea268-8629","podName":"jobzs1fra-mbackground-32-1-dvmq6","podServiceAccount":"default","podNamespace":"default"}
+[2020-05-13T09:55:50.944] [INFO] hftrace - handler started
+[2020-05-13T09:55:50.961] [INFO] hftrace - jobMessage:  [
+  'j6Bb_ZBMN:1:32:1_msg',
+  '{"executable":"mBackground","args":["-t","p2mass-atlas-001124n-j0880032.fits","c2mass-atlas-001124n-j0880032.fits","pimages_20180402_165339_22325.tbl","corrections.tbl"],"inputs":[{"name":"p2mass-atlas-001124n-j0880032.fits","_id":9,"source":3,"firingId":1,"sigIdx":1},{"name":"p2mass-atlas-001124n-j0880032_area.fits","_id":10,"source":3,"firingId":1,"sigIdx":1},{"name":"pimages_20180402_165339_22325.tbl","_id":70,"data":[{}],"sigIdx":1},{"name":"corrections.tbl","_id":71,"source":29,"firingId":1,"sigIdx":1}],"outputs":[{"name":"c2mass-atlas-001124n-j0880032.fits"},{"name":"c2mass-atlas-001124n-j0880032_area.fits"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"j6Bb_ZBMN:1:32:1","name":"mBackground"}'
+]
+[2020-05-13T09:55:50.971] [INFO] hftrace - Job command: 'mBackground -t p2mass-atlas-001124n-j0880032.fits c2mass-atlas-001124n-j0880032.fits pimages_20180402_165339_22325.tbl corrections.tbl'
+[2020-05-13T09:55:51.014] [INFO] hftrace - command: {"pid":28,"name":"mBackground","command":["mBackground","-t","p2mass-atlas-001124n-j0880032.fits","c2mass-atlas-001124n-j0880032.fits","pimages_20180402_165339_22325.tbl","corrections.tbl"]}
+[2020-05-13T09:55:51.015] [INFO] hftrace - IO: {"read":3209,"write":1,"readSyscalls":7,"writeSyscalls":1,"readReal":0,"writeReal":0,"writeCancelled":0,"pid":28,"name":"mBackground"}
+[2020-05-13T09:55:51.021] [INFO] hftrace - NetDev: pid: 28 [{"name":"eth0","rxBytes":6179,"rxPackets":19,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1403,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:51.054] [INFO] hftrace - job started: mBackground
+[2020-05-13T09:55:51.103] [INFO] hftrace - Procusage: pid: 28 {"cpu":0,"memory":15228928,"ctime":40,"elapsed":120,"timestamp":1589363751103,"pid":28,"ppid":16}
+[2020-05-13T09:55:51.112] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"GenuineIntel","family":"6","model":"85","stepping":"3","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":2,"physicalCores":1,"processors":1,"socket":"","cache":{"l1d":32768,"l1i":32768,"l2":1048576,"l3":40370176}},"mem":{"total":2092941312,"free":146501632,"used":1946439680,"active":905109504,"available":1187831808,"buffers":77115392,"cached":1016520704,"slab":195833856,"buffcache":1289469952,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-13T09:55:51.491] [INFO] hftrace - job successful (try 1): mBackground
+[2020-05-13T09:55:51.491] [INFO] hftrace - job exit code: 0
+[2020-05-13T09:55:51.554] [INFO] hftrace - Job inputs: [{"p2mass-atlas-001124n-j0880032.fits":4129920},{"p2mass-atlas-001124n-j0880032_area.fits":4129920},{"pimages_20180402_165339_22325.tbl":1936},{"corrections.tbl":573}]
+[2020-05-13T09:55:51.554] [INFO] hftrace - Job outputs: [{"c2mass-atlas-001124n-j0880032.fits":4129920},{"c2mass-atlas-001124n-j0880032_area.fits":4129920}]
+[2020-05-13T09:55:51.554] [INFO] hftrace - handler exiting

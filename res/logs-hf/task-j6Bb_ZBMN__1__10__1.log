@@ -1,0 +1,20 @@
+[2020-05-13T09:55:21.453] [INFO] hftrace - Environment variables (HF_LOG): {"podIp":"10.40.0.51","nodeName":"gke-cluster-x-default-pool-917ea268-7zqx","podName":"jobv428dq-mprojectpp-10-1-ptdbx","podServiceAccount":"default","podNamespace":"default"}
+[2020-05-13T09:55:21.473] [INFO] hftrace - handler started
+[2020-05-13T09:55:21.519] [INFO] hftrace - jobMessage:  [
+  'j6Bb_ZBMN:1:10:1_msg',
+  '{"executable":"mProjectPP","args":["-X","-x","0.90598","2mass-atlas-001124n-j0850244.fits","p2mass-atlas-001124n-j0850244.fits","big_region_20180402_165339_22325.hdr"],"inputs":[{"name":"big_region_20180402_165339_22325.hdr","_id":4,"data":[{}],"sigIdx":1},{"name":"2mass-atlas-001124n-j0850244.fits","_id":29,"data":[{}],"sigIdx":1}],"outputs":[{"name":"p2mass-atlas-001124n-j0850244.fits"},{"name":"p2mass-atlas-001124n-j0850244_area.fits"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"j6Bb_ZBMN:1:10:1","name":"mProjectPP"}'
+]
+[2020-05-13T09:55:21.521] [INFO] hftrace - Job command: 'mProjectPP -X -x 0.90598 2mass-atlas-001124n-j0850244.fits p2mass-atlas-001124n-j0850244.fits big_region_20180402_165339_22325.hdr'
+[2020-05-13T09:55:21.534] [INFO] hftrace - command: {"pid":24,"name":"mProjectPP","command":["mProjectPP","-X","-x","0.90598","2mass-atlas-001124n-j0850244.fits","p2mass-atlas-001124n-j0850244.fits","big_region_20180402_165339_22325.hdr"]}
+[2020-05-13T09:55:21.536] [INFO] hftrace - IO: {"read":1225,"write":1,"readSyscalls":5,"writeSyscalls":1,"readReal":0,"writeReal":0,"writeCancelled":0,"pid":24,"name":"mProjectPP"}
+[2020-05-13T09:55:21.541] [INFO] hftrace - NetDev: pid: 24 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6041,"rxPackets":20,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1337,"txPackets":15,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:21.600] [INFO] hftrace - job started: mProjectPP
+[2020-05-13T09:55:21.661] [INFO] hftrace - Procusage: pid: 24 {"cpu":0,"memory":2473984,"ctime":30,"elapsed":130,"timestamp":1589363721660,"pid":24,"ppid":12}
+[2020-05-13T09:55:21.699] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"GenuineIntel","family":"6","model":"85","stepping":"3","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":2,"physicalCores":1,"processors":1,"socket":"","cache":{"l1d":32768,"l1i":32768,"l2":1048576,"l3":40370176}},"mem":{"total":2092941312,"free":308191232,"used":1784750080,"active":1077059584,"available":1015881728,"buffers":86118400,"cached":688041984,"slab":174542848,"buffcache":948703232,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-13T09:55:23.540] [INFO] hftrace - IO: {"read":3259213,"write":8259841,"readSyscalls":125,"writeSyscalls":2869,"readReal":1626112,"writeReal":8265728,"writeCancelled":0,"pid":24,"name":"mProjectPP"}
+[2020-05-13T09:55:23.542] [INFO] hftrace - NetDev: pid: 24 [{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"eth0","rxBytes":6935,"rxPackets":30,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1403,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:23.602] [INFO] hftrace - job successful (try 1): mProjectPP
+[2020-05-13T09:55:23.602] [INFO] hftrace - job exit code: 0
+[2020-05-13T09:55:23.606] [INFO] hftrace - Job inputs: [{"big_region_20180402_165339_22325.hdr":306},{"2mass-atlas-001124n-j0850244.fits":1621639}]
+[2020-05-13T09:55:23.606] [INFO] hftrace - Job outputs: [{"p2mass-atlas-001124n-j0850244.fits":4129920},{"p2mass-atlas-001124n-j0850244_area.fits":4129920}]
+[2020-05-13T09:55:23.607] [INFO] hftrace - handler exiting

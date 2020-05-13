@@ -1,0 +1,18 @@
+[2020-05-13T09:55:47.735] [INFO] hftrace - Environment variables (HF_LOG): {"podIp":"10.40.0.60","nodeName":"gke-cluster-x-default-pool-917ea268-7zqx","podName":"jobutmzpk-mbgmodel-29-1-tfgnx","podServiceAccount":"default","podNamespace":"default"}
+[2020-05-13T09:55:47.747] [INFO] hftrace - handler started
+[2020-05-13T09:55:47.764] [INFO] hftrace - jobMessage:  [
+  'j6Bb_ZBMN:1:29:1_msg',
+  '{"executable":"mBgModel","args":["-i","100000","pimages_20180402_165339_22325.tbl","fits.tbl","corrections.tbl"],"inputs":[{"name":"fits.tbl","_id":69,"source":28,"firingId":1,"sigIdx":1},{"name":"pimages_20180402_165339_22325.tbl","_id":70,"data":[{}],"sigIdx":1}],"outputs":[{"name":"corrections.tbl"}],"redis_url":"redis://redis.default.svc.cluster.local:6379","taskId":"j6Bb_ZBMN:1:29:1","name":"mBgModel"}'
+]
+[2020-05-13T09:55:47.766] [INFO] hftrace - Job command: 'mBgModel -i 100000 pimages_20180402_165339_22325.tbl fits.tbl corrections.tbl'
+[2020-05-13T09:55:47.804] [INFO] hftrace - command: {"pid":23,"name":"mBgModel","command":["mBgModel","-i","100000","pimages_20180402_165339_22325.tbl","fits.tbl","corrections.tbl"]}
+[2020-05-13T09:55:47.809] [INFO] hftrace - IO: {"read":3209,"write":1,"readSyscalls":7,"writeSyscalls":1,"readReal":81920,"writeReal":0,"writeCancelled":0,"pid":23,"name":"mBgModel"}
+[2020-05-13T09:55:47.819] [INFO] hftrace - NetDev: pid: 23 [{"name":"eth0","rxBytes":5733,"rxPackets":16,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":1403,"txPackets":16,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0},{"name":"lo","rxBytes":0,"rxPackets":0,"rxErrors":0,"rxDrop":0,"rxFifo":0,"rxFrame":0,"rxCompressed":0,"rxMulticast":0,"txBytes":0,"txPackets":0,"txErrors":0,"txDrop":0,"txFifo":0,"txColls":0,"txCarrier":0,"txCompressed":0}]
+[2020-05-13T09:55:47.841] [INFO] hftrace - job started: mBgModel
+[2020-05-13T09:55:47.876] [INFO] hftrace - Procusage: pid: 23 {"cpu":0,"memory":11354112,"ctime":50,"elapsed":100,"timestamp":1589363747876,"pid":23,"ppid":11}
+[2020-05-13T09:55:47.908] [INFO] hftrace - Sysinfo: {"cpu":{"manufacturer":"Intel®","brand":"Xeon®","vendor":"GenuineIntel","family":"6","model":"85","stepping":"3","revision":"","voltage":"","speed":"2.00","speedmin":"","speedmax":"","governor":"","cores":2,"physicalCores":1,"processors":1,"socket":"","cache":{"l1d":32768,"l1i":32768,"l2":1048576,"l3":40370176}},"mem":{"total":2092941312,"free":146132992,"used":1946808320,"active":1042358272,"available":1050583040,"buffers":91131904,"cached":862953472,"slab":175788032,"buffcache":1129873408,"swaptotal":0,"swapused":0,"swapfree":0}}
+[2020-05-13T09:55:48.882] [INFO] hftrace - job successful (try 1): mBgModel
+[2020-05-13T09:55:48.882] [INFO] hftrace - job exit code: 0
+[2020-05-13T09:55:48.885] [INFO] hftrace - Job inputs: [{"fits.tbl":3745},{"pimages_20180402_165339_22325.tbl":1936}]
+[2020-05-13T09:55:48.885] [INFO] hftrace - Job outputs: [{"corrections.tbl":573}]
+[2020-05-13T09:55:48.885] [INFO] hftrace - handler exiting
