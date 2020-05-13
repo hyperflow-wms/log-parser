@@ -289,7 +289,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     metric = LogParser.parse_env_vars(text)
     if metric:
         env_dict = json.loads(metric.group(1))
-        job_description_logger.append('env', env_dict)
+        job_description_logger.append('env', env_dict )
         job_description_logger.append('nodeName', env_dict["nodeName"])
         return
 
