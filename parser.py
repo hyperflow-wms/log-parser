@@ -118,7 +118,7 @@ class LogParser:
 
     @staticmethod
     def parse_procusage(text):
-        return re.match('Procusage: pid: ([0-9])+[^{]*({.*})', text, re.I)
+        return re.match('Procusage: pid: (\d+)[^{]*({.*})', text, re.I)
 
     @staticmethod
     def parse_io(text):
@@ -126,7 +126,7 @@ class LogParser:
 
     @staticmethod
     def parse_netdev(text):
-        return re.match('NetDev: pid: ([0-9])+[^\[]*(\[.*\])', text, re.I)
+        return re.match('NetDev: pid: (\d+)[^\[]*(\[.*\])', text, re.I)
 
     @staticmethod
     def parse_sysinfo(text):
