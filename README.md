@@ -42,6 +42,14 @@ Identifiers:
    "version":"1.0.0",
    "hyperflowId":"6ZYgjDbbG",
    "jobId":"6ZYgjDbbG-1-29",
+   "env":{
+      "podIp":"10.40.0.56",
+      "nodeName":"gke-cluster-x-default-pool-917ea268-7zqx",
+      "podName":"job4kxmy-mdifffit-29-1-qxfg7",
+      "podServiceAccount":"default",
+      "podNamespace":"default"
+   },
+   "nodeName":"gke-cluster-x-default-pool-917ea268-7zqx",
    "executable":"mBgModel",
    "args":[
       "-i",
@@ -93,10 +101,10 @@ Identifiers:
       "processors":1,
       "socket":"",
       "cache":{
-         "l1d":"",
-         "l1i":"",
-         "l2":"",
-         "l3":""
+         "l1d": 32768, 
+         "l1i": 32768, 
+         "l2": 1048576, 
+         "l3": 40370176
       }
    },
    "mem":{
