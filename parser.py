@@ -123,6 +123,10 @@ class LogParser:
     @staticmethod
     def parse_io(text):
         return re.match('IO[^{]*({.*})', text, re.I)
+    
+    @staticmethod
+    def parse_command(text):
+        return re.match('command[^{]*({.*})', text, re.I)
 
     @staticmethod
     def parse_netdev(text):
@@ -254,6 +258,16 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
         new_log['pid'] = io_log.pop('pid', None)
         metrics_logger.append_log(new_log, 'io', io_log)
         return
+    
+    # Optional: parsing command (redundant - job_command does essentially the same)
+    # metric = LogParser.parse_command(text)
+    # if metric:
+    #     command_log = eval(metric.group(1))
+    #     command_log.pop('ppid', None)
+    #     command_log.pop('name', None)
+    #     new_log['pid'] = command_log.pop('pid', None)
+    #     metrics_logger.append_log(new_log, 'io', command_log)
+    #     return
 
     metric = LogParser.parse_netdev(text)
     if metric:
@@ -336,9 +350,9 @@ def extract_workflow_info(workflow_json_path):
     return workflow_info
 
 
-def parse_and_save_logs(base_dir, dest_dir, workflow_json_path):
+def parse_and_save_logs(base_dir, dest_dir, workflow_json_path, omit):
     workflow_info = extract_workflow_info(workflow_json_path)
-    logs_dest_dir = prepare_logs_dest_dir(dest_dir, workflow_info)
+    logs_dest_dir = dest_dir if omit else prepare_logs_dest_dir(dest_dir, workflow_info) 
     for file in os.listdir(base_dir):
         if file.endswith("1.log"):
             parse_and_save_json_log_file(base_dir, logs_dest_dir, file, workflow_info)
@@ -346,8 +360,9 @@ def parse_and_save_logs(base_dir, dest_dir, workflow_json_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Workflow logs parser!')
-    parser.add_argument('-s', '--source', type=str, default=SOURCE_DIR, help='Logs source directory')
-    parser.add_argument('-d', '--destination', type=str, default=DEST_DIR, help='Parsed logs destination directory')
+    parser.add_argument('-s', '--source', type=str, default=SOURCE_DIR, help='logs source directory')
+    parser.add_argument('-d', '--destination', type=str, default=DEST_DIR, help='parsed logs destination directory')
     parser.add_argument('-w', '--workflow', type=str, default=WORKFLOW_JSON, help='workflow.json path')
+    parser.add_argument('-o', '--omit', default=False, action='store_true', help='omit creating dedicated new directory in the destination directory')
     args = parser.parse_args()
-    parse_and_save_logs(args.source, args.destination, args.workflow)
+    parse_and_save_logs(args.source, args.destination, args.workflow, args.omit)

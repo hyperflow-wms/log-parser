@@ -6,6 +6,7 @@ You can use optional run parameters:
 - -s - to specify logs source directory (by default `logs-hf` is set)
 - -d - to specify logs destination directory (by default `./` is set)
 - -w - to specify `workflow.json` file path (by default `./` is set)
+- -o - to omit creading new dedicated directory in the destination path (defaults to _false_)
 
 e.g.
 `python3 parser.py -s logs-hf -d parsed-logs -w workflow.json`
@@ -14,9 +15,9 @@ e.g.
 
 Logs are written to directory with name pattern `<dest_dir>/<workflow_name>__<workflow_size>__<version>__<date_time>`, where:
  * `dest_dir` - destination directory from run parameters,
- * `workflow_name` - extracted from `file-sizes.log` file, `undefined` if `name` key does not exist,
- * `workflow_size` - extracted from `file-sizes.log` file, number of processes if `size` key does not exist,
- * `version` - extracted from `file-sizes.log` file, `1.0.0` if `version` key does not exist,
+ * `workflow_name` - extracted from `workflow.json` file, `undefined` if `name` key does not exist,
+ * `workflow_size` - extracted from `workflow.json` file, number of processes if `size` key does not exist,
+ * `version` - extracted from `workflow.json` file, `1.0.0` if `version` key does not exist,
  * `date_time`- timestamp in `%Y-%m-%d-%H-%M-%S` format
  
  eg. `montage__0.25__1.0.0__2020-04-20-12-01-24`,
