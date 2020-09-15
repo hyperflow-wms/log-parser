@@ -136,7 +136,7 @@ class LogParser:
     @staticmethod
     def parse_io(text):
         return re.match('IO[^{]*({.*})', text, re.I)
-    
+
     @staticmethod
     def parse_command(text):
         return re.match('command[^{]*({.*})', text, re.I)
@@ -148,11 +148,11 @@ class LogParser:
     @staticmethod
     def parse_sysinfo(text):
         return re.match('Sysinfo[^{]*({.*})', text, re.I)
-    
+
     @staticmethod
     def parse_inputs(text):
         return re.match('Job\sinputs:\s+(\[.*\])', text, re.I)
-    
+
     @staticmethod
     def parse_outputs(text):
         return re.match('Job\soutputs:\s+(\[.*\])', text, re.I)
@@ -281,7 +281,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
         new_log['pid'] = io_log.pop('pid', None)
         metrics_logger.append_log(new_log, 'io', io_log)
         return
-    
+
     # Optional: parsing command (redundant - job_command does essentially the same)
     # metric = LogParser.parse_command(text)
     # if metric:
@@ -304,7 +304,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     if metric:
         sys_info_logger.append(eval(metric.group(1)))
         return
-    
+
     metric = LogParser.parse_inputs(text)
     if metric:
         file_dict_tuple = ast.literal_eval(metric.group(1).strip())
@@ -313,7 +313,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
             file_sizes_dict.update(file_dict)
         job_description_logger.log_map['inputs'] = extend_with_sizes(job_description_logger.log_map['inputs'], file_sizes_dict)
         return
-    
+
     metric = LogParser.parse_outputs(text)
     if metric:
         file_dict_tuple = ast.literal_eval(metric.group(1).strip())
@@ -322,7 +322,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
             file_sizes_dict.update(file_dict)
         job_description_logger.log_map['outputs'] = extend_with_sizes(job_description_logger.log_map['outputs'], file_sizes_dict)
         return
-    
+
     metric = LogParser.parse_env_vars(text)
     if metric:
         env_dict = json.loads(metric.group(1))
