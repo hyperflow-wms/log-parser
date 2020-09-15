@@ -88,6 +88,10 @@ class JobDescriptionLogger:
             datetime.strptime(job_end_time, self.time_format).timestamp() * 1000) - self.job_start_time
 
     def append(self, key, value):
+        # Detect corrupted logs - case when multiple handlers write to single file
+        if key in self.log_map:
+            msg = "Duplicated '{}' key for job '{}'.".format(key, self.log_map['jobId'])
+            raise Exception(msg)
         self.log_map[key] = value
 
     def save(self):
