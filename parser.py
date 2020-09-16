@@ -110,6 +110,11 @@ class LogParser:
 
     @staticmethod
     def parse_handler_finished(text):
+        # New format
+        match = re.match('handler finished.*', text, re.I)
+        if match is not None:
+            return match
+        # Backward compatibility with old job-executor format
         return re.match('handler exiting.*', text, re.I)
 
     @staticmethod
