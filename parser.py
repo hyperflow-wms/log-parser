@@ -16,11 +16,12 @@ SYS_INFO_FILE = 'sys_info.jsonl'
 
 
 class MetricsLogger:
-    def __init__(self, workflow_id, job_id, source_dir, file_name=METRICS_FILE):
+    def __init__(self, context_info, source_dir, file_name=METRICS_FILE):
         self.log_list = []
         self.custom_fields = {
-            'workflowId': workflow_id,
-            'jobId': job_id
+            'workflowId': context_info['workflowId'],
+            'jobId': context_info['jobId'],
+            'handlerId': context_info['handlerId'],
         }
         self.file_name = os.path.join(source_dir, file_name)
 
@@ -46,13 +47,15 @@ class MetricsLogger:
 
 
 class SystemInfoLogger:
-    def __init__(self, job_id, source_dir, file_name=SYS_INFO_FILE):
+    def __init__(self, context_info, source_dir, file_name=SYS_INFO_FILE):
         self.log_list = []
-        self.job_id = job_id
+        self.job_id = context_info['jobId']
+        self.handler_id = context_info['handlerId']
         self.file_name = os.path.join(source_dir, file_name)
 
     def append(self, log):
         log['jobId'] = self.job_id
+        log['handlerId'] = self.handler_id
         self.log_list.append(log)
 
     def save(self):
@@ -61,13 +64,14 @@ class SystemInfoLogger:
 
 
 class JobDescriptionLogger:
-    def __init__(self, hyperflow_id, job_id, source_dir, workflow_info, file_name=JOB_DESCRIPTIONS_FILE):
+    def __init__(self, context_info, source_dir, workflow_info, file_name=JOB_DESCRIPTIONS_FILE):
         self.log_map = {
             'workflowName': workflow_info['workflowName'],
             'size': workflow_info['size'],
             'version': workflow_info['version'],
-            'hyperflowId': hyperflow_id,
-            'jobId': job_id
+            'hyperflowId': context_info['hyperflowId'],
+            'jobId': context_info['jobId'],
+            'handlerId': context_info['handlerId']
         }
         self.time_format = '%Y-%m-%dT%H:%M:%S.%f'
         self.file_name = os.path.join(source_dir, file_name)
@@ -84,6 +88,10 @@ class JobDescriptionLogger:
             datetime.strptime(job_end_time, self.time_format).timestamp() * 1000) - self.job_start_time
 
     def append(self, key, value):
+        # Detect corrupted logs - case when multiple handlers write to single file
+        if key in self.log_map:
+            msg = "Duplicated '{}' key for job '{}'.".format(key, self.log_map['jobId'])
+            raise Exception(msg)
         self.log_map[key] = value
 
     def save(self):
@@ -128,7 +136,7 @@ class LogParser:
     @staticmethod
     def parse_io(text):
         return re.match('IO[^{]*({.*})', text, re.I)
-    
+
     @staticmethod
     def parse_command(text):
         return re.match('command[^{]*({.*})', text, re.I)
@@ -140,11 +148,11 @@ class LogParser:
     @staticmethod
     def parse_sysinfo(text):
         return re.match('Sysinfo[^{]*({.*})', text, re.I)
-    
+
     @staticmethod
     def parse_inputs(text):
         return re.match('Job\sinputs:\s+(\[.*\])', text, re.I)
-    
+
     @staticmethod
     def parse_outputs(text):
         return re.match('Job\soutputs:\s+(\[.*\])', text, re.I)
@@ -167,16 +175,26 @@ def save_log_list(logs, dest_file):
 
 
 def extract_job_info(filename):
-    matches = re.match(r'.*task-([A-Za-z0-9\-_]+)__(\d+)__(\d+)__\d+\.log', filename)
+    hf_id = None
+    app_id = None
+    proc_id = None
+    handler_id = None
+    matches = re.match(r'.*task-([A-Za-z0-9\-_]+)__(\d+)__(\d+)__\d+(?:@([A-Za-z0-9\-_]+))?\.log', filename)
     if matches:
         hf_id = matches.group(1)
         app_id = matches.group(2)
         proc_id = matches.group(3)
+        handler_id = matches.group(4)
     else:
         print("Did not match .log file.")
 
-    return {"hyperflowId": hf_id, "workflowId": "{}-{}".format(hf_id, app_id),
-            "jobId": "{}-{}-{}".format(hf_id, app_id, proc_id)}
+    jobInfo = {
+        "hyperflowId": hf_id,
+        "workflowId": "{}-{}".format(hf_id, app_id),
+        "jobId": "{}-{}-{}".format(hf_id, app_id, proc_id),
+        "handlerId": handler_id
+    }
+    return jobInfo
 
 
 def split_logs(log_fd):
@@ -263,7 +281,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
         new_log['pid'] = io_log.pop('pid', None)
         metrics_logger.append_log(new_log, 'io', io_log)
         return
-    
+
     # Optional: parsing command (redundant - job_command does essentially the same)
     # metric = LogParser.parse_command(text)
     # if metric:
@@ -286,7 +304,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     if metric:
         sys_info_logger.append(eval(metric.group(1)))
         return
-    
+
     metric = LogParser.parse_inputs(text)
     if metric:
         file_dict_tuple = ast.literal_eval(metric.group(1).strip())
@@ -295,7 +313,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
             file_sizes_dict.update(file_dict)
         job_description_logger.log_map['inputs'] = extend_with_sizes(job_description_logger.log_map['inputs'], file_sizes_dict)
         return
-    
+
     metric = LogParser.parse_outputs(text)
     if metric:
         file_dict_tuple = ast.literal_eval(metric.group(1).strip())
@@ -304,7 +322,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
             file_sizes_dict.update(file_dict)
         job_description_logger.log_map['outputs'] = extend_with_sizes(job_description_logger.log_map['outputs'], file_sizes_dict)
         return
-    
+
     metric = LogParser.parse_env_vars(text)
     if metric:
         env_dict = json.loads(metric.group(1))
@@ -330,10 +348,9 @@ def parse_and_save_json_log_file(basedir, dest_dir, filename, workflow_info):
     context_info = extract_job_info(full_file_name)
 
     # loggers initialization
-    job_description_logger = JobDescriptionLogger(context_info['hyperflowId'], context_info['jobId'], dest_dir,
-                                                  workflow_info)
-    sys_info_logger = SystemInfoLogger(context_info['jobId'], dest_dir)
-    metrics_logger = MetricsLogger(context_info['workflowId'], context_info['jobId'], dest_dir)
+    job_description_logger = JobDescriptionLogger(context_info, dest_dir, workflow_info)
+    sys_info_logger = SystemInfoLogger(context_info, dest_dir)
+    metrics_logger = MetricsLogger(context_info, dest_dir)
 
     for line_dict in lines:
         parse_single_log(line_dict, job_description_logger, sys_info_logger, metrics_logger)
@@ -357,9 +374,9 @@ def extract_workflow_info(workflow_json_path):
 
 def parse_and_save_logs(base_dir, dest_dir, workflow_json_path, omit):
     workflow_info = extract_workflow_info(workflow_json_path)
-    logs_dest_dir = dest_dir if omit else prepare_logs_dest_dir(dest_dir, workflow_info) 
+    logs_dest_dir = dest_dir if omit else prepare_logs_dest_dir(dest_dir, workflow_info)
     for file in os.listdir(base_dir):
-        if file.endswith("1.log"):
+        if file.endswith(".log") and file.count("__") == 3:
             parse_and_save_json_log_file(base_dir, logs_dest_dir, file, workflow_info)
 
 
