@@ -14,6 +14,11 @@ DEST_DIR = './'
 JOB_DESCRIPTIONS_FILE = 'job_descriptions.jsonl'
 SYS_INFO_FILE = 'sys_info.jsonl'
 
+# Handle parsing of 'null', 'false' and 'true' values in JSONs 
+# FIXME: switch to json.loads instead of eval
+null = None
+true = True
+false = False
 
 class MetricsLogger:
     def __init__(self, context_info, source_dir, file_name=METRICS_FILE):
