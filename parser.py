@@ -332,7 +332,7 @@ def parse_single_log(log, job_description_logger, sys_info_logger, metrics_logge
     if metric:
         env_dict = json.loads(metric.group(1))
         job_description_logger.append('env', env_dict )
-        job_description_logger.append('nodeName', env_dict["nodeName"])
+        job_description_logger.append('nodeName', env_dict.get("nodeName", "unknown"))
         return
 
     return None
